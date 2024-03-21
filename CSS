@@ -1,0 +1,14 @@
+.march {
+   
+    Width: 100%;
+    border-collapse:collapse;
+} 
+
+.march th{
+    text-align: center;
+}
+.march td {
+    border:1px solid #131111;
+    padding: 8px;
+    text-align: center;
+}
