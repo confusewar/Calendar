@@ -17,6 +17,9 @@ export default class Calendar extends LightningElement {
             let rowCells = [];
             for (let j = 0; j < numCols; j++) {
                 let isSunday = days[j] === 'Sunday';
+                let isMahaShivaratri  = i === 1 && j==5;
+                let isHoli  = i === 4 && j==1;
+                let isGoodFriday = i === 4 && j == 5;
                 let value = '';
  
                 if (i === 0 && days[j] === 'Friday') {
@@ -36,7 +39,7 @@ export default class Calendar extends LightningElement {
                 } else if (i === 5 && j === 0) {
                     value = counter++;
                 }
-                rowCells.push({ id: j, value: value, isSunday: isSunday });
+                rowCells.push({ id: j, value: value, isSunday: isSunday,isMahaShivaratri: isMahaShivaratri,isHoli: isHoli,isGoodFriday: isGoodFriday});
             }
             this.rows.push({ id: i, cells: rowCells });
         }
