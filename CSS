@@ -1,14 +1,44 @@
-.march {
-   
-    Width: 100%;
-    border-collapse:collapse;
-} 
-
-.march th{
-    text-align: center;
-}
-.march td {
-    border:1px solid #131111;
-    padding: 8px;
-    text-align: center;
+import { LightningElement, track } from 'lwc';
+ 
+export default class Calendar extends LightningElement {
+    @track rows = [];
+ 
+    connectedCallback() {
+        this.createTable();
+    }
+ 
+    createTable() {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const numRows = 6;
+        const numCols = 7;
+        let counter = 1;
+ 
+        for (let i = 0; i < numRows; i++) {
+            let rowCells = [];
+            for (let j = 0; j < numCols; j++) {
+                let isSunday = days[j] === 'Sunday';
+                let value = '';
+ 
+                if (i === 0 && days[j] === 'Friday') {
+                    value = counter++;
+                    console.log(i + 'friday');
+                } else if (i === 0 && days[j] === 'Saturday') {
+                    value = counter++;
+                    console.log(i + 'saturday');
+                } else if (i === 1) {
+                    value = counter++;              
+                } else if (i === 2) {
+                    value = counter++;
+                } else if (i === 3) {
+                    value = counter++;
+                } else if (i === 4) {
+                    value = counter++;
+                } else if (i === 5 && j === 0) {
+                    value = counter++;
+                }
+                rowCells.push({ id: j, value: value, isSunday: isSunday });
+            }
+            this.rows.push({ id: i, cells: rowCells });
+        }
+    }
 }
