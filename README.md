@@ -18,14 +18,38 @@ html:
   <tbody>    
   <template for:each={rows} for:item="row">    
   <tr style="table-layout: fixed; width: 100%; height: 60px; text-align: center;" key={row.id}>    
-  <template for:each={row.cells} for:item="cell">    
+ <template for:each={row.cells} for:item="cell">    
   <template if:true={cell.isSunday}>
   <td style="text-align: center; border: 1px solid black; color: red;" key={cell.id}>{cell.value}</td>
   </template>
   <template if:false={cell.isSunday}>
-  <td style="text-align: center; border: 1px solid black; color: black;" key={cell.id}>{cell.value}</td>
+    <template if:true={cell.isMahaShivaratri}>
+      <td style="position: relative;text-align: center; border: 1px solid black; background-color: rgb(182, 236, 242);" key={cell.id}>
+      <span style="position: absolute;top: 0;left: 0;font-size:10px;text-align: center;">Maha Shivaratri</span>
+      {cell.value}
+    </td>
+    </template>
+      <template if:false={cell.isMahaShivaratri}>
+        <template if:true={cell.isHoli}>
+          <td style="position: relative;text-align: center; border: 1px solid black;background-color: rgb(202, 145, 199);" key={cell.id}>
+          <span style="position: absolute;top: 0;left: 0;font-size:10px;text-align: center;">Holi</span>
+          {cell.value}
+          </td>
+        </template>
+          <template if:false={cell.isHoli}>
+            <template if:true={cell.isGoodFriday}>
+              <td style="position: relative;text-align: center; border: 1px solid black; background-color: rgb(214, 239, 186);" key={cell.id}>
+              <span style="position: absolute;top: 0;left: 0;font-size:10px;text-align: center;">Good Friday</span>
+              {cell.value}
+              </td>
+            </template>
+              <template if:false={cell.isGoodFriday}>
+              <td style="text-align: center; border: 1px solid black; color: black;" key={cell.id}>{cell.value}</td>
+              </template>
+          </template>
+    </template>
   </template>
-  </template>    
+ </template>    
   </tr>    
   </template>    
   </tbody>    
@@ -52,6 +76,9 @@ export default class Calendar extends LightningElement {
             let rowCells = [];
             for (let j = 0; j < numCols; j++) {
                 let isSunday = days[j] === 'Sunday';
+                let isMahaShivaratri  = i === 1 && j==5;
+                let isHoli  = i === 4 && j==1;
+                let isGoodFriday = i === 4 && j == 5;
                 let value = '';
  
                 if (i === 0 && days[j] === 'Friday') {
@@ -71,10 +98,12 @@ export default class Calendar extends LightningElement {
                 } else if (i === 5 && j === 0) {
                     value = counter++;
                 }
-                rowCells.push({ id: j, value: value, isSunday: isSunday });
+                rowCells.push({ id: j, value: value, isSunday: isSunday,isMahaShivaratri: isMahaShivaratri,isHoli: isHoli,isGoodFriday: isGoodFriday});
             }
             this.rows.push({ id: i, cells: rowCells });
         }
     }
+}
+
 }
 
