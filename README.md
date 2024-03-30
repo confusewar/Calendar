@@ -1,105 +1,80 @@
 html:
 <template>
-    <table class="march">
-        <thead>
+  <table style="background-image:url(https://d2w00000md1qseat-dev-ed--c.develop.vf.force.com/resource/1711105363000/Calendar); table-layout: fixed; width: 100%; height: 60px; text-align: center; border: 1px solid black;">    
+      <thead>
           <tr>
-            <th align="centre"> MARCH 2024 </th>
+            <td colspan ="7" style ="text-align: center; color:solid black; font-size: 20px" height="50px" > MARCH--2024 </td>
           </tr>
-        </thead>
-        <thead>
-          <tr>
-            <!-- Here we have applied inline style 
-              to make it more attractive-->
-            <td style="color: white; background: rgb(169, 122, 190);">Sun</td>
-            <td style="color: white; background: rgb(169, 122, 190);">Mon</td>
-            <td style="color: white; background: rgb(169, 122, 190);">Tue</td>
-            <td style="color: white; background: rgb(169, 122, 190);">Wed</td>
-            <td style="color: white; background: rgb(169, 122, 190);">Thu</td>
-            <td style="color: white; background: rgb(169, 122, 190);">Fri</td>
-            <td style="color: white; background: rgb(169, 122, 190);">sat</td>
-          </tr>
-        </thead>
-        
-        <tbody>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>1</td>
-            <td>2</td>
-          </tr>
-          <tr></tr>
-          <tr>
-            <td>3</td>
-            <td>4</td>
-            <td>5</td>
-            <td>6</td>
-            <td>7</td>
-            <td style="color: white; background: rgb(176, 209, 221);">8 
-              <br> 
-              MAHA SHIVARATRI
-            </td>
-            <td>9</td>
-          </tr>
-          <tr>
-            <td>10</td>
-            <td>11</td>
-            <td>12</td>
-            <td>13</td>
-            <td>14</td>
-            <td>15</td>
-            <td>16</td>
-          </tr>
-          <tr>
-            <td>17</td>
-            <td>18</td>
-            <td>19</td>
-            <td>20</td>
-            <td>21</td>
-            <td>22</td>
-            <td>23</td>
-          </tr>
-          <tr>
-            <td>24</td>
-            <td style="color: white; background: rgb(216, 172, 212);">25
-              <br>
-              Holi day
-            </td>
-            <td>26</td>
-            <td>27</td>
-            <td>28</td>
-            <td style="color: white; background: rgb(236, 237, 193);">29
-              <br>
-              Good Friday
-            </td>
-            <td>30</td>
-          </tr>
-          <tr>
-            <td>31</td>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-            <td>5</td>
-            <td>6</td>
-          </tr>
-        </tbody>
-    </table>
+  <tr style="table-layout: fixed; width: 100%; height: 60px;">    
+  <th style="text-align: center;color: rgb(17, 17, 17); border: 1px solid black;background-color: plum; ">Sunday</th>    
+  <th style="text-align: center;color: rgb(17, 17, 17); border: 1px solid black;background-color: plum;">Monday</th>    
+  <th style="text-align: center;color: rgb(17, 17, 17); border: 1px solid black;background-color: plum;">Tuesday</th>
+  <th style="text-align: center;color: rgb(17, 17, 17); border: 1px solid black;background-color: plum;">Wednesday</th>
+  <th style="text-align: center;color: rgb(17, 17, 17); border: 1px solid black;background-color: plum;">Thursday</th>
+  <th style="text-align: center;color: rgb(17, 17, 17); border: 1px solid black;background-color: plum;">Friday</th>
+  <th style="text-align: center;color: rgb(17, 17, 17); border: 1px solid black;background-color: plum;">Saturday</th>
+  </tr>    
+  </thead>    
+  <tbody>    
+  <template for:each={rows} for:item="row">    
+  <tr style="table-layout: fixed; width: 100%; height: 60px; text-align: center;" key={row.id}>    
+  <template for:each={row.cells} for:item="cell">    
+  <template if:true={cell.isSunday}>
+  <td style="text-align: center; border: 1px solid black; color: red;" key={cell.id}>{cell.value}</td>
   </template>
-  css:
-  .march {
-   
-    Width: 100%;
-    border-collapse:collapse;
-} 
+  <template if:false={cell.isSunday}>
+  <td style="text-align: center; border: 1px solid black; color: black;" key={cell.id}>{cell.value}</td>
+  </template>
+  </template>    
+  </tr>    
+  </template>    
+  </tbody>    
+  </table>    
+  </template>
 
-.march th{
-    text-align: center;
+JS:
+import { LightningElement, track } from 'lwc';
+ 
+export default class Calendar extends LightningElement {
+    @track rows = [];
+ 
+    connectedCallback() {
+        this.createTable();
+    }
+ 
+    createTable() {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const numRows = 6;
+        const numCols = 7;
+        let counter = 1;
+ 
+        for (let i = 0; i < numRows; i++) {
+            let rowCells = [];
+            for (let j = 0; j < numCols; j++) {
+                let isSunday = days[j] === 'Sunday';
+                let value = '';
+ 
+                if (i === 0 && days[j] === 'Friday') {
+                    value = counter++;
+                    console.log(i + 'friday');
+                } else if (i === 0 && days[j] === 'Saturday') {
+                    value = counter++;
+                    console.log(i + 'saturday');
+                } else if (i === 1) {
+                    value = counter++;              
+                } else if (i === 2) {
+                    value = counter++;
+                } else if (i === 3) {
+                    value = counter++;
+                } else if (i === 4) {
+                    value = counter++;
+                } else if (i === 5 && j === 0) {
+                    value = counter++;
+                }
+                rowCells.push({ id: j, value: value, isSunday: isSunday });
+            }
+            this.rows.push({ id: i, cells: rowCells });
+        }
+    }
 }
-.march td {
-    border:1px solid #131111;
-    padding: 8px;
-    text-align: center;
-}
+
